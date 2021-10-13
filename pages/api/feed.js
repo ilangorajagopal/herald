@@ -8,7 +8,7 @@ async function changelogFeed(req, res) {
 	const { data, error } = await supabase
 		.from('changelogs')
 		.select()
-		.match({ author: userId })
+		.match({ author: userId, status: 'live' })
 		.order('updated_at', { ascending: false });
 
 	if (data && data.length > 0) {
