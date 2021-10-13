@@ -78,6 +78,7 @@ const Auth = () => {
 									<Input
 										onChange={formik.handleChange}
 										h={12}
+										name='email'
 										type='email'
 										value={formik.values.email}
 									/>
