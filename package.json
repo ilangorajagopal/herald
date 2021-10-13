@@ -1,0 +1,48 @@
+{
+	"name": "@herald/app",
+	"version": "0.1.0",
+	"scripts": {
+		"dev": "next dev -p 3001",
+		"build": "next build",
+		"start": "next start",
+		"prepare": "husky install",
+		"lint": "eslint ./ --ext js,jsx,ts,tsx"
+	},
+	"dependencies": {
+		"@chakra-ui/react": "^1.6.5",
+		"@emotion/react": "^11",
+		"@emotion/styled": "^11",
+		"@supabase/supabase-js": "^1.20.0",
+		"@supabase/ui": "^0.32.0",
+		"@tiptap/extension-heading": "^2.0.0-beta.15",
+		"@tiptap/extension-image": "^2.0.0-beta.15",
+		"@tiptap/extension-link": "^2.0.0-beta.19",
+		"@tiptap/react": "^2.0.0-beta.55",
+		"@tiptap/starter-kit": "^2.0.0-beta.89",
+		"cors": "^2.8.5",
+		"date-fns": "^2.23.0",
+		"formik": "^2.2.9",
+		"framer-motion": "^4",
+		"lodash.capitalize": "^4.2.1",
+		"next": "11.0.1",
+		"next-compose-plugins": "^2.2.1",
+		"next-connect": "^0.10.2",
+		"react": "17.0.2",
+		"react-color": "^2.19.3",
+		"react-dom": "17.0.2",
+		"react-use": "^17.2.4"
+	},
+	"devDependencies": {
+		"eslint": "^7.31.0",
+		"eslint-config-next": "^11.0.1",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-react": "^7.24.0",
+		"husky": "^7.0.1",
+		"lint-staged": "^11.1.0",
+		"prettier": "2.3.2"
+	},
+	"lint-staged": {
+		"*.js": "eslint --cache --fix",
+		"*.{js,css,md,mdx}": "prettier --write"
+	}
+}

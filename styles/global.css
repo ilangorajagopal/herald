@@ -1,0 +1,144 @@
+.ProseMirror {
+	min-height: 600px !important;
+	outline: none !important;
+	border: 1px solid #e2e8f0 !important;
+	border-radius: 0.5rem !important;
+}
+
+.ProseMirror.ProseMirror-focused {
+	border-color: #3182ce !important;
+	box-shadow: 0 0 0 1px #3182ce !important;
+}
+
+.ProseMirror,
+.ProseMirror.ProseMirror-focused {
+	/*border: none transparent !important;*/
+	outline: none !important;
+	padding: 1rem !important;
+}
+
+/* Text styles inside and outside the editor */
+
+.herald > * + * {
+	margin-top: 0.75em;
+}
+
+.herald ul,
+.herald ol,
+.ProseMirror ul,
+.ProseMirror ol {
+	padding: 0 1rem;
+}
+
+.herald h1,
+.herald h2,
+.herald h3,
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+	font-weight: bold;
+	line-height: 1.1;
+}
+
+.herald h1,
+.ProseMirror h1 {
+	font-size: 2em;
+	margin: 0.67em 0;
+}
+
+.herald h2,
+.ProseMirror h2 {
+	font-size: 1.5rem;
+	margin: 0.75em 0;
+}
+
+.herald h3,
+.ProseMirror h3 {
+	font-size: 1.3rem;
+	margin: 0.83em 0;
+}
+
+.herald pre,
+.ProseMirror pre {
+	background: #0d0d0d;
+	color: #fff;
+	font-family: 'JetBrainsMono', monospace;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+}
+
+.herald pre code,
+.ProseMirror pre code {
+	color: inherit;
+	padding: 0;
+	background: none;
+	font-size: 0.8rem;
+}
+
+.herald blockquote,
+.ProseMirror blockquote {
+	padding-left: 1rem;
+	border-left: 2px solid;
+}
+
+.herald a,
+.ProseMirror a {
+	color: #68cef8;
+}
+
+.herald img,
+.ProseMirror img {
+	max-width: 100%;
+	height: auto;
+}
+
+.upload::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	height: 100%;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 6px;
+}
+
+.upload.progress::before {
+	animation: progress 6s ease-in-out forwards;
+}
+
+@keyframes progress {
+	0% {
+		left: -100%;
+	}
+	10% {
+		left: -97%;
+	}
+	20% {
+		left: -92%;
+	}
+	30% {
+		left: -82%;
+	}
+	30% {
+		left: -62%;
+	}
+	40% {
+		left: -38%;
+	}
+	50% {
+		left: -18%;
+	}
+	60% {
+		left: -14%;
+	}
+	80% {
+		left: -7%;
+	}
+	90% {
+		left: -3%;
+	}
+	100% {
+		left: 0%;
+	}
+}
