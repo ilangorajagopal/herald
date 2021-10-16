@@ -1,9 +1,10 @@
 import NextLink from 'next/link';
-import Image from 'next/image';
-import { chakra, Flex, Link, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Image, Link, useColorModeValue } from '@chakra-ui/react';
 import { FaExternalLinkSquareAlt } from 'react-icons/fa';
 
-function PublicPageHeader() {
+function PublicPageHeader(props) {
+	const { profile } = props;
+
 	return (
 		<chakra.header
 			d='flex'
@@ -36,9 +37,9 @@ function PublicPageHeader() {
 								cursor='pointer'
 							>
 								<Image
-									src='/logo.png'
-									width={40}
-									height={40}
+									src={profile?.company_logo}
+									htmlWidth={40}
+									htmlHeight={40}
 									alt='Logo'
 								/>
 								<chakra.span
@@ -53,7 +54,7 @@ function PublicPageHeader() {
 									alignItems='center'
 									justifyContent='flex-start'
 								>
-									Herald
+									{profile?.company_name}
 								</chakra.span>
 							</chakra.a>
 						</NextLink>
@@ -62,7 +63,7 @@ function PublicPageHeader() {
 						<Link
 							d='flex'
 							alignItems='center'
-							href='https://useherald.com'
+							href={profile?.website}
 							isExternal
 						>
 							Home&nbsp;&nbsp;

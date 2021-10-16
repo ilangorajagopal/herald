@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import {
 	chakra,
+	Alert,
+	AlertTitle,
+	AlertDescription,
 	Button,
 	FormControl,
 	FormLabel,
 	Input,
 	Skeleton,
+	Tag,
 	useToast,
 } from '@chakra-ui/react';
 import { Formik } from 'formik';
@@ -65,6 +69,7 @@ function PublicPage() {
 				<Formik
 					initialValues={{
 						subdomain: user?.subdomain ?? '',
+						customDomain: user?.customDomain ?? '',
 					}}
 					onSubmit={async (values) => {
 						setProfileSaving(true);
@@ -84,6 +89,54 @@ function PublicPage() {
 									name='subdomain'
 									type='text'
 									value={formik.values.subdomain}
+									w='full'
+									h={12}
+								/>
+							</FormControl>
+							<Alert
+								status='success'
+								variant='subtle'
+								flexDirection='column'
+								alignItems='flex-start'
+								justifyContent='center'
+								textAlign='left'
+								p={4}
+								mb={8}
+							>
+								<AlertTitle mb={4} fontSize='lg'>
+									How to set up custom domain?
+								</AlertTitle>
+								<AlertDescription>
+									<chakra.ol ml={6}>
+										<chakra.li mb={2}>
+											Create a CNAME to{' '}
+											<Tag>
+												{formik.values.subdomain}
+												.useherald.com
+											</Tag>
+										</chakra.li>
+										<chakra.li mb={2}>
+											Make sure that your custom domain is
+											successfully pointing to Herald
+											(this may take a while).
+										</chakra.li>
+										<chakra.li mb={2}>
+											Enter the custom domain below and
+											save.
+										</chakra.li>
+									</chakra.ol>
+								</AlertDescription>
+							</Alert>
+							<FormControl mb={8}>
+								<FormLabel>Custom Domain</FormLabel>
+								<Input
+									onChange={(e) => {
+										console.log(e.target.value);
+										formik.handleChange(e);
+									}}
+									name='customDomain'
+									type='text'
+									value={formik.values.customDomain}
 									w='full'
 									h={12}
 								/>

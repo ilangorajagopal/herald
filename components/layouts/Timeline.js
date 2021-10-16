@@ -3,7 +3,7 @@ import { Container, Footer, PublicPageHeader } from '../common';
 
 const TimelineLayout = (props) => (
 	<Container height='auto' minH='100vh'>
-		<PublicPageHeader />
+		<PublicPageHeader profile={props.profile} />
 		<chakra.div
 			w='full'
 			maxW='container.md'

@@ -6,7 +6,7 @@ import TimelineLayout from '../components/layouts/Timeline';
 import { format, formatDistance } from 'date-fns';
 
 function Home(props) {
-	const { changelogs } = props;
+	const { changelogs, profile } = props;
 
 	return (
 		<>
@@ -15,10 +15,10 @@ function Home(props) {
 					rel='icon'
 					type='image/png'
 					sizes='32x32'
-					href='/logo.png'
+					href={profile?.company_logo}
 				/>
 			</Head>
-			<TimelineLayout>
+			<TimelineLayout profile={profile}>
 				<VStack py={16} w='full' spacing={8}>
 					{changelogs.map((changelog) => {
 						return (
@@ -70,6 +70,12 @@ function Home(props) {
 export default Home;
 
 export async function getServerSideProps() {
+	const { data: profile } = await supabase
+		.from('profiles')
+		.select('company_logo,company_name,website')
+		.match({ subdomain: 'herald' })
+		.single();
+
 	const { data: changelogs, error } = await supabase
 		.from('changelogs')
 		.select()
@@ -80,6 +86,7 @@ export async function getServerSideProps() {
 		return {
 			props: {
 				changelogs,
+				profile,
 			},
 		};
 	} else {
