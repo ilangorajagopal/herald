@@ -6,7 +6,7 @@ import Changelogs from './Changelogs';
 import Banners from './Banners';
 
 export default function Main(props) {
-	const { changelogs, profile } = props;
+	const { banners, changelogs, profile } = props;
 	const [activeType, setActiveType] = useState('changelogs');
 
 	let componentContent = null;
@@ -37,14 +37,14 @@ export default function Main(props) {
 					w='full'
 					mb={4}
 				>
-					<NextLink href='/changelog/new'>
+					<NextLink href='/banner/new'>
 						<Button px={8} py={6} colorScheme='brand'>
 							Add Banner
 						</Button>
 					</NextLink>
 				</Flex>
 				<VStack w='full' spacing={8}>
-					<Banners banners={[]} profile={profile} />
+					<Banners banners={banners} profile={profile} />
 				</VStack>
 			</>
 		);
