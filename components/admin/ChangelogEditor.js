@@ -10,7 +10,7 @@ function ChangelogEditor(props) {
 			<Input
 				borderRadius='lg'
 				h={16}
-				fontSize='2xl'
+				fontSize='xl'
 				defaultValue={title}
 				onChange={(e) => setTitle(e.target.value)}
 				placeholder='New Update'

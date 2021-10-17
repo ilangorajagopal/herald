@@ -5,6 +5,7 @@ import SignIn from '../../components/common/Auth';
 
 const Admin = () => {
 	const [session, setSession] = useState(null);
+	const [banners, setBanners] = useState([]);
 	const [changelogs, setChangelogs] = useState([]);
 	const [profile, setProfile] = useState(null);
 
@@ -24,6 +25,18 @@ const Admin = () => {
 					setChangelogs(data);
 				} else {
 					console.log(error);
+				}
+
+				const { data: banners, error: bannerError } = await supabase
+					.from('banners')
+					.select()
+					.match({ author: user.id })
+					.order('updated_at', { ascending: false });
+
+				if (banners && banners.length > 0) {
+					setBanners(banners);
+				} else {
+					console.log(bannerError);
 				}
 
 				// Fetch user's profile
@@ -50,7 +63,7 @@ const Admin = () => {
 	}, []);
 
 	return session ? (
-		<Main changelogs={changelogs} profile={profile} />
+		<Main banners={banners} changelogs={changelogs} profile={profile} />
 	) : (
 		<SignIn />
 	);

@@ -1,90 +1,79 @@
-import { Fragment } from 'react';
+import { useState } from 'react';
 import NextLink from 'next/link';
-import {
-	chakra,
-	Box,
-	Button,
-	Divider,
-	Heading,
-	Text,
-	VStack,
-} from '@chakra-ui/react';
-import { format, formatDistance } from 'date-fns';
-import capitalize from 'lodash.capitalize';
+import { Button, Flex, Select, VStack } from '@chakra-ui/react';
 import DefaultLayout from '../layouts/Default';
+import Changelogs from './Changelogs';
+import Banners from './Banners';
 
 export default function Main(props) {
-	const { changelogs, profile } = props;
+	const { banners, changelogs, profile } = props;
+	const [activeType, setActiveType] = useState('changelogs');
 
-	return (
-		<DefaultLayout>
-			<VStack py={8} w='full' spacing={8}>
-				<Box w='full' mb={4}>
-					<NextLink href='/dashboard/new'>
+	let componentContent = null;
+	if (activeType === 'changelogs') {
+		componentContent = (
+			<>
+				<Flex
+					alignItems='center'
+					justifyContent='start'
+					w='full'
+					mb={4}
+				>
+					<NextLink href='/changelog/new'>
 						<Button px={8} py={6} colorScheme='brand'>
 							Add Update
 						</Button>
 					</NextLink>
-				</Box>
+				</Flex>
+				<Changelogs changelogs={changelogs} profile={profile} />
+			</>
+		);
+	} else if (activeType === 'banners') {
+		componentContent = (
+			<>
+				<Flex
+					alignItems='center'
+					justifyContent='start'
+					w='full'
+					mb={4}
+				>
+					<NextLink href='/banner/new'>
+						<Button px={8} py={6} colorScheme='brand'>
+							Add Banner
+						</Button>
+					</NextLink>
+				</Flex>
 				<VStack w='full' spacing={8}>
-					{changelogs.map((changelog) => {
-						return (
-							<Fragment key={changelog.id}>
-								<Box w='full'>
-									<Heading as='h2' mb={4}>
-										{changelog.title}
-									</Heading>
-									<chakra.div
-										d='flex'
-										alignItems='center'
-										justifyContent='start'
-										mb={8}
-										w='full'
-									>
-										<Text color='brand.200'>
-											<NextLink
-												href={`/dashboard/edit?id=${changelog.id}`}
-											>
-												Edit
-											</NextLink>
-										</Text>
-										&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-										<Text fontSize='sm'>
-											{capitalize(changelog.status)}
-										</Text>
-										&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-										<Text fontSize='sm'>
-											{profile?.name}
-										</Text>
-										&nbsp;&nbsp;&middot;&nbsp;&nbsp;
-										<Text
-											fontSize='sm'
-											title={format(
-												new Date(changelog.updated_at),
-												'PPPpp'
-											)}
-										>
-											{formatDistance(
-												new Date(changelog.updated_at),
-												new Date(),
-												{ addSuffix: true }
-											)}
-										</Text>
-									</chakra.div>
-									<chakra.div
-										className='herald'
-										fontSize='lg'
-										lineHeight='tall'
-										dangerouslySetInnerHTML={{
-											__html: changelog.content,
-										}}
-									/>
-								</Box>
-								<Divider />
-							</Fragment>
-						);
-					})}
+					<Banners banners={banners} profile={profile} />
 				</VStack>
+			</>
+		);
+	}
+
+	return (
+		<DefaultLayout>
+			<VStack py={8} w='full' spacing={8}>
+				<Flex
+					alignItems='center'
+					justifyContent='flex-start'
+					w='full'
+					my={6}
+				>
+					<Select
+						w='auto'
+						fontSize='4xl'
+						defaultValue={activeType}
+						onChange={(e) => setActiveType(e.target.value)}
+						variant='unstyled'
+					>
+						<option value='changelogs'>Changelog</option>
+						<option value='banners'>Banners</option>
+						{/*<option value="roadmap">*/}
+						{/*	Roadmap*/}
+						{/*</option>*/}
+					</Select>
+				</Flex>
+				{componentContent}
 			</VStack>
 		</DefaultLayout>
 	);
