@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import NextLink from 'next/link';
 import {
+	Box,
 	Button,
 	Flex,
 	Menu,
@@ -8,6 +9,7 @@ import {
 	MenuList,
 	MenuItem,
 	VStack,
+	useColorModeValue,
 } from '@chakra-ui/react';
 import { FiChevronDown } from 'react-icons/fi';
 import capitalize from 'lodash.capitalize';
@@ -57,6 +59,38 @@ export default function Main(props) {
 					<Banners banners={banners} profile={profile} />
 				</VStack>
 			</>
+		);
+	} else if (activeType === 'waitlist') {
+		componentContent = (
+			<Box
+				w='full'
+				h={48}
+				d='flex'
+				alignItems='center'
+				justifyContent='center'
+				borderWidth={2}
+				borderStyle='solid'
+				borderColor={useColorModeValue('gray.400', 'gray.700')}
+				borderRadius='lg'
+			>
+				Coming soon!
+			</Box>
+		);
+	} else if (activeType === 'roadmap') {
+		componentContent = (
+			<Box
+				w='full'
+				h={48}
+				d='flex'
+				alignItems='center'
+				justifyContent='center'
+				borderWidth={2}
+				borderStyle='solid'
+				borderColor={useColorModeValue('gray.400', 'gray.700')}
+				borderRadius='lg'
+			>
+				Coming soon!
+			</Box>
 		);
 	}
 
