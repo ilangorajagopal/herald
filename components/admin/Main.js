@@ -16,6 +16,7 @@ import capitalize from 'lodash.capitalize';
 import DefaultLayout from '../layouts/Default';
 import Changelogs from './Changelogs';
 import Banners from './Banners';
+import Roadmap from './Roadmap';
 
 export default function Main(props) {
 	const { banners, changelogs, profile } = props;
@@ -78,19 +79,11 @@ export default function Main(props) {
 		);
 	} else if (activeType === 'roadmap') {
 		componentContent = (
-			<Box
-				w='full'
-				h={48}
-				d='flex'
-				alignItems='center'
-				justifyContent='center'
-				borderWidth={2}
-				borderStyle='solid'
-				borderColor={useColorModeValue('gray.400', 'gray.700')}
-				borderRadius='lg'
-			>
-				Coming soon!
-			</Box>
+			<>
+				<VStack w='full' spacing={8}>
+					<Roadmap profile={profile} />
+				</VStack>
+			</>
 		);
 	}
 
