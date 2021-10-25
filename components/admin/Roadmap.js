@@ -251,17 +251,7 @@ export default function Roadmap(props) {
 		roadmapElement = (
 			<VStack alignItems='start' w='full'>
 				<RoadmapHeader onFeatureModalOpen={onFeatureModalOpen} />
-				<Flex
-					w='full'
-					h='auto'
-					alignItems='center'
-					justifyContent='center'
-					borderWidth={1}
-					borderStyle='solid'
-					borderRadius='lg'
-				>
-					{featuresElement}
-				</Flex>
+				{featuresElement}
 			</VStack>
 		);
 	}
