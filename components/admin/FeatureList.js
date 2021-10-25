@@ -11,9 +11,9 @@ import {
 	Tag,
 	Text,
 	VStack,
-	useColorModeValue,
 	MenuButton,
 	MenuList,
+	HStack,
 } from '@chakra-ui/react';
 import startCase from 'lodash.startcase';
 import truncate from 'lodash.truncate';
@@ -27,7 +27,7 @@ function Feature(props) {
 			templateColumns='repeat(8, 1fr)'
 			gap={2}
 			w='full'
-			h={32}
+			h={40}
 			px={6}
 			py={4}
 			spacing={4}
@@ -61,15 +61,22 @@ function Feature(props) {
 					h='full'
 					alignItems='start'
 					justifyContent='center'
-					spacing={4}
+					spacing={2}
 				>
-					<Heading as='h4' fontSize='lg' fontWeight='semibold'>
-						{feature.title}
-					</Heading>
-					<Text d='none' fontSize='sm' title={feature.description}>
+					<HStack alignItems='center' spacing={4}>
+						<Heading
+							as='h4'
+							fontSize='lg'
+							fontWeight='semibold'
+							title={feature.title}
+						>
+							{truncate(feature.title, { length: 40 })}
+						</Heading>
+						<Tag px={2}>{startCase(feature.status)}</Tag>
+					</HStack>
+					<Text fontSize='sm' title={feature.description}>
 						{truncate(feature.description, { length: 140 })}
 					</Text>
-					<Tag px={2}>{startCase(feature.status)}</Tag>
 				</VStack>
 			</GridItem>
 			<GridItem colSpan={1}>
@@ -105,13 +112,14 @@ export default function FeatureList(props) {
 			justifyContent='start'
 			borderWidth={1}
 			borderStyle='solid'
-			borderColor={useColorModeValue('gray.400', 'gray.700')}
 			borderRadius='lg'
 		>
 			{features.map((feature, index) => (
 				<>
 					<Feature feature={feature} key={feature.id} />
-					{index <= features.length - 1 ? <Divider /> : null}
+					{index < features.length - 1 ? (
+						<Divider style={{ marginTop: '0' }} />
+					) : null}
 				</>
 			))}
 		</VStack>

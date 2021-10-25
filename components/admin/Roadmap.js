@@ -3,45 +3,36 @@ import {
 	Box,
 	Button,
 	Flex,
-	Heading,
-	Icon,
+	HStack,
 	Spinner,
 	Text,
 	VStack,
-	useColorModeValue,
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
 import { mutate } from 'swr';
-import { HiPlus } from 'react-icons/hi';
 import FeatureModal from '../common/FeatureModal';
 import { supabase } from '../../lib/supabaseClient';
 import FeatureList from './FeatureList';
 
 function RoadmapHeader(props) {
 	return (
-		<Flex
+		<HStack
 			w='full'
 			alignItems='center'
 			justifyContent='space-between'
 			mb={4}
 		>
-			<Heading as='h3' fontSize='3xl' fontWeight='normal'>
-				My Roadmap
-			</Heading>
 			<Button
-				w={12}
-				h={12}
+				w='auto'
 				aria-label='Add Feature'
 				colorScheme='brand'
-				variant='outline'
 				onClick={props.onNewFeatureModalOpen}
-				size='md'
-				borderWidth={2}
+				size='lg'
 			>
-				<Icon as={HiPlus} fontSize='2xl' />
+				Add Feature
 			</Button>
-		</Flex>
+		</HStack>
 	);
 }
 
@@ -126,7 +117,6 @@ export default function Roadmap(props) {
 				justifyContent='center'
 				borderWidth={1}
 				borderStyle='solid'
-				borderColor={useColorModeValue('gray.400', 'gray.700')}
 				borderRadius='lg'
 			>
 				<Text fontSize='xl' mb={4}>
@@ -152,7 +142,6 @@ export default function Roadmap(props) {
 				justifyContent='center'
 				borderWidth={1}
 				borderStyle='solid'
-				borderColor={useColorModeValue('gray.400', 'gray.700')}
 				borderRadius='lg'
 			>
 				<Spinner />
@@ -174,7 +163,6 @@ export default function Roadmap(props) {
 				justifyContent='center'
 				borderWidth={1}
 				borderStyle='solid'
-				borderColor={useColorModeValue('gray.400', 'gray.700')}
 				borderRadius='lg'
 			>
 				<Text fontSize='xl' mb={4}>
@@ -196,7 +184,6 @@ export default function Roadmap(props) {
 					justifyContent='center'
 					borderWidth={1}
 					borderStyle='solid'
-					borderColor={useColorModeValue('gray.400', 'gray.700')}
 					borderRadius='lg'
 				>
 					<Spinner />
@@ -214,7 +201,6 @@ export default function Roadmap(props) {
 					justifyContent='center'
 					borderWidth={1}
 					borderStyle='solid'
-					borderColor={useColorModeValue('gray.400', 'gray.700')}
 					borderRadius='lg'
 				>
 					{featuresElement}
