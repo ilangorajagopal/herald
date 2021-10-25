@@ -8,7 +8,8 @@ async function fetchFeatures(req, res) {
 	const { data, error } = await supabase
 		.from('features')
 		.select()
-		.match({ roadmap_id: roadmapId });
+		.match({ roadmap_id: roadmapId })
+		.order('upvotes', { ascending: false });
 
 	if (data && !error) {
 		res.status(200).json({ features: data });

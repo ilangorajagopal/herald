@@ -4,6 +4,7 @@ import {
 	Button,
 	Flex,
 	Heading,
+	Icon,
 	Spinner,
 	Text,
 	VStack,
@@ -12,6 +13,7 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { mutate } from 'swr';
+import { HiPlus } from 'react-icons/hi';
 import NewFeatureModal from '../common/NewFeatureModal';
 import { supabase } from '../../lib/supabaseClient';
 import FeatureList from './FeatureList';
@@ -28,12 +30,16 @@ function RoadmapHeader(props) {
 				My Roadmap
 			</Heading>
 			<Button
-				aria-label='Create Feature'
+				w={12}
+				h={12}
+				aria-label='Add Feature'
 				colorScheme='brand'
+				variant='outline'
 				onClick={props.onNewFeatureModalOpen}
 				size='md'
+				borderWidth={2}
 			>
-				Create Feature
+				<Icon as={HiPlus} fontSize='2xl' />
 			</Button>
 		</Flex>
 	);
@@ -109,7 +115,7 @@ export default function Roadmap(props) {
 	}
 
 	let featuresElement = null;
-	if (features.length === 0 && !areFeaturesLoading) {
+	if (features?.length === 0 && !areFeaturesLoading) {
 		featuresElement = (
 			<Box
 				w='full'
@@ -134,17 +140,9 @@ export default function Roadmap(props) {
 				>
 					Create Feature
 				</Button>
-				<NewFeatureModal
-					createFeatureRequest={createFeatureRequest}
-					defaultCTA='Save Feature'
-					emailRequired={false}
-					loadingCTA='Saving Feature...'
-					isOpen={isNewFeatureModalOpen}
-					onClose={onNewFeatureModalClose}
-				/>
 			</Box>
 		);
-	} else if (features.length === 0 && areFeaturesLoading) {
+	} else if (features?.length === 0 && areFeaturesLoading) {
 		featuresElement = (
 			<Box
 				w='full'
@@ -160,7 +158,7 @@ export default function Roadmap(props) {
 				<Spinner />
 			</Box>
 		);
-	} else if (features.length > 0 && !areFeaturesLoading) {
+	} else if (features?.length > 0 && !areFeaturesLoading) {
 		featuresElement = <FeatureList features={features} />;
 	}
 
@@ -225,5 +223,17 @@ export default function Roadmap(props) {
 		);
 	}
 
-	return roadmapElement;
+	return (
+		<>
+			{roadmapElement}
+			<NewFeatureModal
+				createFeatureRequest={createFeatureRequest}
+				defaultCTA='Save Feature'
+				emailRequired={false}
+				loadingCTA='Saving Feature...'
+				isOpen={isNewFeatureModalOpen}
+				onClose={onNewFeatureModalClose}
+			/>
+		</>
+	);
 }
