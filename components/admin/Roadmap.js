@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { mutate } from 'swr';
 import { HiPlus } from 'react-icons/hi';
-import NewFeatureModal from '../common/NewFeatureModal';
+import FeatureModal from '../common/FeatureModal';
 import { supabase } from '../../lib/supabaseClient';
 import FeatureList from './FeatureList';
 
@@ -226,7 +226,7 @@ export default function Roadmap(props) {
 	return (
 		<>
 			{roadmapElement}
-			<NewFeatureModal
+			<FeatureModal
 				createFeatureRequest={createFeatureRequest}
 				defaultCTA='Save Feature'
 				emailRequired={false}

@@ -8,12 +8,14 @@ import {
 	Icon,
 	Menu,
 	MenuItem,
+	Tag,
 	Text,
 	VStack,
 	useColorModeValue,
 	MenuButton,
 	MenuList,
 } from '@chakra-ui/react';
+import startCase from 'lodash.startcase';
 import truncate from 'lodash.truncate';
 import { HiDotsVertical, HiOutlineChevronUp } from 'react-icons/hi';
 
@@ -54,13 +56,20 @@ function Feature(props) {
 				</Flex>
 			</GridItem>
 			<GridItem colSpan={6}>
-				<VStack alignItems='start' justifyContent='center' spacing={4}>
+				<VStack
+					w='full'
+					h='full'
+					alignItems='start'
+					justifyContent='center'
+					spacing={4}
+				>
 					<Heading as='h4' fontSize='lg' fontWeight='semibold'>
 						{feature.title}
 					</Heading>
-					<Text fontSize='sm' title={feature.description}>
+					<Text d='none' fontSize='sm' title={feature.description}>
 						{truncate(feature.description, { length: 140 })}
 					</Text>
+					<Tag px={2}>{startCase(feature.status)}</Tag>
 				</VStack>
 			</GridItem>
 			<GridItem colSpan={1}>

@@ -12,11 +12,17 @@ import {
 	ModalCloseButton,
 	Textarea,
 	useColorModeValue,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	Menu,
 } from '@chakra-ui/react';
 import { Formik } from 'formik';
 import { useState } from 'react';
+import { FiChevronDown } from 'react-icons/fi';
+import startCase from 'lodash.startcase';
 
-export default function NewFeatureModal(props) {
+export default function FeatureModal(props) {
 	const {
 		createFeatureRequest,
 		defaultCTA,
@@ -26,6 +32,7 @@ export default function NewFeatureModal(props) {
 		onClose,
 	} = props;
 	const [isFeatureSaving, setIsFeatureSaving] = useState(false);
+	const [featureStatus, setFeatureStatus] = useState('planned');
 
 	return (
 		<Modal isCentered={true} isOpen={isOpen} onClose={onClose} size='3xl'>
@@ -45,7 +52,10 @@ export default function NewFeatureModal(props) {
 						}}
 						onSubmit={async (values) => {
 							setIsFeatureSaving(true);
-							await createFeatureRequest(values);
+							await createFeatureRequest({
+								...values,
+								status: featureStatus,
+							});
 							setIsFeatureSaving(false);
 						}}
 					>
@@ -82,7 +92,7 @@ export default function NewFeatureModal(props) {
 										h={12}
 									/>
 								</FormControl>
-								<FormControl mb={8}>
+								<FormControl mb={4}>
 									<FormLabel>
 										Describe the feature in a short
 										paragraph
@@ -97,6 +107,56 @@ export default function NewFeatureModal(props) {
 										w='full'
 										h={32}
 									/>
+								</FormControl>
+								<FormControl mb={8}>
+									<FormLabel>Status</FormLabel>
+									<Menu>
+										<MenuButton
+											as={Button}
+											rightIcon={<FiChevronDown />}
+											w='auto'
+										>
+											{startCase(featureStatus)}
+										</MenuButton>
+										<MenuList mt={2} p={0}>
+											<MenuItem
+												onClick={() =>
+													setFeatureStatus('planned')
+												}
+												p={4}
+											>
+												Planned
+											</MenuItem>
+											<MenuItem
+												onClick={() =>
+													setFeatureStatus(
+														'in progress'
+													)
+												}
+												p={4}
+											>
+												In Progress
+											</MenuItem>
+											<MenuItem
+												onClick={() =>
+													setFeatureStatus(
+														'completed'
+													)
+												}
+												p={4}
+											>
+												Completed
+											</MenuItem>
+											<MenuItem
+												onClick={() =>
+													setFeatureStatus('live')
+												}
+												p={4}
+											>
+												Live
+											</MenuItem>
+										</MenuList>
+									</Menu>
 								</FormControl>
 								<FormControl d='flex' justifyContent='flex-end'>
 									<Button variant='ghost'>Cancel</Button>
