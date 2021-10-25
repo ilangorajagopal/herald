@@ -24,15 +24,18 @@ import startCase from 'lodash.startcase';
 
 export default function FeatureModal(props) {
 	const {
-		createFeatureRequest,
+		saveFeature,
 		defaultCTA,
 		emailRequired,
+		feature,
 		loadingCTA,
 		isOpen,
 		onClose,
 	} = props;
 	const [isFeatureSaving, setIsFeatureSaving] = useState(false);
-	const [featureStatus, setFeatureStatus] = useState('planned');
+	const [featureStatus, setFeatureStatus] = useState(
+		feature?.status ?? 'planned'
+	);
 
 	return (
 		<Modal isCentered={true} isOpen={isOpen} onClose={onClose} size='3xl'>
@@ -46,13 +49,13 @@ export default function FeatureModal(props) {
 				<ModalBody py={4}>
 					<Formik
 						initialValues={{
-							requested_by: '',
-							title: '',
-							description: '',
+							requested_by: feature?.requested_by ?? '',
+							title: feature?.title ?? '',
+							description: feature?.description ?? '',
 						}}
 						onSubmit={async (values) => {
 							setIsFeatureSaving(true);
-							await createFeatureRequest({
+							await saveFeature({
 								...values,
 								status: featureStatus,
 							});

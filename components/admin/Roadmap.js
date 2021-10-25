@@ -27,7 +27,7 @@ function RoadmapHeader(props) {
 				w='auto'
 				aria-label='Add Feature'
 				colorScheme='brand'
-				onClick={props.onNewFeatureModalOpen}
+				onClick={props.onFeatureModalOpen}
 				size='lg'
 			>
 				Add Feature
@@ -39,15 +39,13 @@ function RoadmapHeader(props) {
 export default function Roadmap(props) {
 	const { profile } = props;
 	const {
-		isOpen: isNewFeatureModalOpen,
-		onOpen: onNewFeatureModalOpen,
-		onClose: onNewFeatureModalClose,
+		isOpen: isFeatureModalOpen,
+		onOpen: onFeatureModalOpen,
+		onClose: onFeatureModalClose,
 	} = useDisclosure();
 	const { roadmap, isLoading } = useRoadmap(profile?.id);
 	const { features, areFeaturesLoading } = useFeatures(roadmap?.id);
 	const toast = useToast();
-
-	console.log(features);
 
 	async function createRoadmap() {
 		const user = supabase.auth.user();
@@ -93,10 +91,63 @@ export default function Roadmap(props) {
 				isClosable: true,
 				position: 'top-right',
 			});
-			onNewFeatureModalClose();
+			onFeatureModalClose();
 		} else {
 			toast({
 				title: 'There was a problem creating the feature',
+				status: 'error',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+		}
+	}
+
+	async function saveFeature(id, feature) {
+		const { data, error } = await supabase
+			.from('features')
+			.update(feature)
+			.match({ id });
+
+		if (data && !error) {
+			await mutate(`/api/features?roadmapId=${roadmap?.id}`);
+			toast({
+				title: 'Feature Updated!',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+		} else {
+			toast({
+				title: 'There was a problem updating the feature',
+				status: 'error',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+		}
+	}
+
+	async function deleteFeature(id) {
+		const { data, error } = await supabase
+			.from('features')
+			.delete()
+			.match({ id });
+
+		if (data && !error) {
+			await mutate(`/api/features?roadmapId=${roadmap?.id}`);
+			toast({
+				title: 'Feature Deleted!',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+			onFeatureModalClose();
+		} else {
+			toast({
+				title: 'There was a problem deleting the feature',
 				status: 'error',
 				duration: 3000,
 				isClosable: true,
@@ -126,7 +177,7 @@ export default function Roadmap(props) {
 				<Button
 					aria-label='Create Feature'
 					colorScheme='brand'
-					onClick={onNewFeatureModalOpen}
+					onClick={onFeatureModalOpen}
 				>
 					Create Feature
 				</Button>
@@ -148,7 +199,13 @@ export default function Roadmap(props) {
 			</Box>
 		);
 	} else if (features?.length > 0 && !areFeaturesLoading) {
-		featuresElement = <FeatureList features={features} />;
+		featuresElement = (
+			<FeatureList
+				deleteFeature={deleteFeature}
+				features={features}
+				saveFeature={saveFeature}
+			/>
+		);
 	}
 
 	let roadmapElement = null;
@@ -176,7 +233,7 @@ export default function Roadmap(props) {
 	} else if (!roadmap && isLoading) {
 		roadmapElement = (
 			<VStack alignItems='start' w='full'>
-				<RoadmapHeader onNewFeatureModalOpen={onNewFeatureModalOpen} />
+				<RoadmapHeader onFeatureModalOpen={onFeatureModalOpen} />
 				<Flex
 					w='full'
 					h={64}
@@ -193,7 +250,7 @@ export default function Roadmap(props) {
 	} else if (roadmap && !isLoading) {
 		roadmapElement = (
 			<VStack alignItems='start' w='full'>
-				<RoadmapHeader onNewFeatureModalOpen={onNewFeatureModalOpen} />
+				<RoadmapHeader onFeatureModalOpen={onFeatureModalOpen} />
 				<Flex
 					w='full'
 					h='auto'
@@ -213,12 +270,12 @@ export default function Roadmap(props) {
 		<>
 			{roadmapElement}
 			<FeatureModal
-				createFeatureRequest={createFeatureRequest}
+				saveFeature={createFeatureRequest}
 				defaultCTA='Save Feature'
 				emailRequired={false}
 				loadingCTA='Saving Feature...'
-				isOpen={isNewFeatureModalOpen}
-				onClose={onNewFeatureModalClose}
+				isOpen={isFeatureModalOpen}
+				onClose={onFeatureModalClose}
 			/>
 		</>
 	);
