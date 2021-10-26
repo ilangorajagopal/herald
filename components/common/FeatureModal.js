@@ -24,6 +24,7 @@ import startCase from 'lodash.startcase';
 
 export default function FeatureModal(props) {
 	const {
+		setStatus,
 		saveFeature,
 		defaultCTA,
 		emailRequired,
@@ -68,7 +69,7 @@ export default function FeatureModal(props) {
 								onSubmit={formik.handleSubmit}
 							>
 								{emailRequired ? (
-									<FormControl mb={4}>
+									<FormControl mb={8}>
 										<FormLabel>Your email</FormLabel>
 										<Input
 											onChange={(e) => {
@@ -82,7 +83,7 @@ export default function FeatureModal(props) {
 										/>
 									</FormControl>
 								) : null}
-								<FormControl mb={4}>
+								<FormControl mb={8}>
 									<FormLabel>What is the feature?</FormLabel>
 									<Input
 										onChange={(e) => {
@@ -95,7 +96,7 @@ export default function FeatureModal(props) {
 										h={12}
 									/>
 								</FormControl>
-								<FormControl mb={4}>
+								<FormControl mb={8}>
 									<FormLabel>
 										Describe the feature in a short
 										paragraph
@@ -111,66 +112,70 @@ export default function FeatureModal(props) {
 										h={32}
 									/>
 								</FormControl>
-								<FormControl mb={8}>
-									<FormLabel>Status</FormLabel>
-									<Menu>
-										<MenuButton
-											as={Button}
-											rightIcon={<FiChevronDown />}
-											w='auto'
-										>
-											{startCase(featureStatus)}
-										</MenuButton>
-										<MenuList mt={2} p={0}>
-											<MenuItem
-												onClick={() =>
-													setFeatureStatus(
-														'awaiting approval'
-													)
-												}
-												p={4}
+								{setStatus ? (
+									<FormControl mb={8}>
+										<FormLabel>Status</FormLabel>
+										<Menu>
+											<MenuButton
+												as={Button}
+												rightIcon={<FiChevronDown />}
+												w='auto'
 											>
-												Awaiting Approval
-											</MenuItem>
-											<MenuItem
-												onClick={() =>
-													setFeatureStatus('planned')
-												}
-												p={4}
-											>
-												Planned
-											</MenuItem>
-											<MenuItem
-												onClick={() =>
-													setFeatureStatus(
-														'in progress'
-													)
-												}
-												p={4}
-											>
-												In Progress
-											</MenuItem>
-											<MenuItem
-												onClick={() =>
-													setFeatureStatus(
-														'completed'
-													)
-												}
-												p={4}
-											>
-												Completed
-											</MenuItem>
-											<MenuItem
-												onClick={() =>
-													setFeatureStatus('live')
-												}
-												p={4}
-											>
-												Live
-											</MenuItem>
-										</MenuList>
-									</Menu>
-								</FormControl>
+												{startCase(featureStatus)}
+											</MenuButton>
+											<MenuList mt={2} p={0}>
+												<MenuItem
+													onClick={() =>
+														setFeatureStatus(
+															'awaiting approval'
+														)
+													}
+													p={4}
+												>
+													Awaiting Approval
+												</MenuItem>
+												<MenuItem
+													onClick={() =>
+														setFeatureStatus(
+															'planned'
+														)
+													}
+													p={4}
+												>
+													Planned
+												</MenuItem>
+												<MenuItem
+													onClick={() =>
+														setFeatureStatus(
+															'in progress'
+														)
+													}
+													p={4}
+												>
+													In Progress
+												</MenuItem>
+												<MenuItem
+													onClick={() =>
+														setFeatureStatus(
+															'completed'
+														)
+													}
+													p={4}
+												>
+													Completed
+												</MenuItem>
+												<MenuItem
+													onClick={() =>
+														setFeatureStatus('live')
+													}
+													p={4}
+												>
+													Live
+												</MenuItem>
+											</MenuList>
+										</Menu>
+									</FormControl>
+								) : null}
 								<FormControl d='flex' justifyContent='flex-end'>
 									<Button variant='ghost'>Cancel</Button>
 									<Button

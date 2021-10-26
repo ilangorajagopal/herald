@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import {
 	Button,
 	Divider,
@@ -58,29 +59,6 @@ function Feature(props) {
 				py={4}
 				spacing={4}
 			>
-				<GridItem colSpan={1}>
-					<Flex
-						w='full'
-						h='full'
-						alignItems='center'
-						justifyContent='start'
-					>
-						<Flex
-							w={16}
-							h={16}
-							p={2}
-							flexDirection='column'
-							alignItems='center'
-							justifyContent='center'
-							borderWidth={1}
-							borderStyle='solid'
-							rounded='lg'
-						>
-							<Icon as={HiOutlineChevronUp} fontSize='2xl' />
-							<Text>{feature?.upvotes}</Text>
-						</Flex>
-					</Flex>
-				</GridItem>
 				<GridItem colSpan={6}>
 					<VStack
 						w='full'
@@ -104,6 +82,28 @@ function Feature(props) {
 							{truncate(feature.description, { length: 140 })}
 						</Text>
 					</VStack>
+				</GridItem>
+				<GridItem colSpan={1}>
+					<Flex
+						w='full'
+						h='full'
+						alignItems='center'
+						justifyContent='start'
+					>
+						<Flex
+							w={16}
+							h={16}
+							p={2}
+							flexDirection='column'
+							alignItems='center'
+							justifyContent='center'
+							rounded='lg'
+							bg={useColorModeValue('gray.50', 'gray.600')}
+						>
+							<Icon as={HiOutlineChevronUp} fontSize='2xl' />
+							<Text>{feature?.upvotes}</Text>
+						</Flex>
+					</Flex>
 				</GridItem>
 				<GridItem colSpan={1}>
 					<Flex
@@ -195,17 +195,16 @@ export default function FeatureList(props) {
 			h='auto'
 			alignItems='start'
 			justifyContent='start'
-			borderWidth={1}
-			borderStyle='solid'
-			borderRadius='lg'
+			bg={useColorModeValue('gray.100', 'gray.700')}
+			rounded='xl'
+			shadow='md'
 		>
 			{features.map((feature, index) => (
-				<>
+				<Fragment key={feature.id}>
 					<Feature
 						deleteFeature={deleteFeature}
 						feature={feature}
 						isFeatureModalOpen={isFeatureModalOpen}
-						key={feature.id}
 						onFeatureModalClose={onFeatureModalClose}
 						onFeatureModalOpen={onFeatureModalOpen}
 						saveFeature={saveFeature}
@@ -213,7 +212,7 @@ export default function FeatureList(props) {
 					{index < features.length - 1 ? (
 						<Divider style={{ marginTop: '0' }} />
 					) : null}
-				</>
+				</Fragment>
 			))}
 		</VStack>
 	);
