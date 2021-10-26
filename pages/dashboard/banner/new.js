@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import {
@@ -9,16 +9,12 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { FaChevronLeft } from 'react-icons/fa';
-import BannerEditor from '../../components/admin/BannerEditor';
-import DefaultLayout from '../../components/layouts/Default';
-import { saveBanner, publishBanner } from '../../lib/utils';
-import { supabase } from '../../lib/supabaseClient';
+import BannerEditor from '../../../components/admin/BannerEditor';
+import DefaultLayout from '../../../components/layouts/Default';
+import { saveBanner, publishBanner } from '../../../lib/utils';
 
-export default function EditBanner() {
+export default function NewBanner() {
 	const router = useRouter();
-	const {
-		query: { id },
-	} = router;
 	const [banner, setBanner] = useState(null);
 	const [bannerBgColor, setBannerBgColor] = useState('#2cb67d');
 	const [content, setContent] = useState('');
@@ -29,32 +25,6 @@ export default function EditBanner() {
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('hero-featured-post');
 	const toast = useToast();
-
-	useEffect(() => {
-		async function fetchBanner() {
-			const { data, error } = await supabase
-				.from('banners')
-				.select()
-				.match({ id })
-				.single();
-
-			if (data) {
-				setBanner(data);
-				setTitle(data.title);
-				setContent(data.content);
-				setCta(data.cta);
-				setCtaText(data.cta_text);
-				setCtaType(data.cta_type);
-				setCtaButtonBgColor(data.cta_bg);
-				setType(data.type);
-				setBannerBgColor(data.bg);
-			} else {
-				console.error(error);
-			}
-		}
-
-		fetchBanner().then(() => {});
-	}, []);
 
 	async function saveHandler() {
 		const bannerData = {

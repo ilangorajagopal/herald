@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { chakra, Box, Heading, Text, VStack } from '@chakra-ui/react';
-import { supabase } from '../lib/supabaseClient';
-import TimelineLayout from '../components/layouts/Timeline';
+import { supabase } from '../../lib/supabaseClient';
+import TimelineLayout from '../../components/layouts/Timeline';
 import { format, formatDistance } from 'date-fns';
 
 function Changelog(props) {
@@ -62,18 +62,18 @@ function Changelog(props) {
 export default Changelog;
 
 export async function getServerSideProps(context) {
-	const { changelog } = context.params;
-	const { data, error } = await supabase
+	const { id } = context.params;
+	const { data: changelog, error } = await supabase
 		.from('changelogs')
 		.select()
-		.match({ id: changelog })
+		.match({ id })
 		.order('updated_at', { ascending: false })
 		.single();
 
 	if (changelog) {
 		return {
 			props: {
-				changelog: data,
+				changelog,
 			},
 		};
 	} else {
