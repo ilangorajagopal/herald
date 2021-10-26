@@ -10,12 +10,14 @@ import {
 	useColorModeValue,
 } from '@chakra-ui/react';
 import { FaExternalLinkSquareAlt, FaMoon, FaSun } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 function PublicPageHeader(props) {
 	const { profile } = props;
 	const { toggleColorMode: toggleMode } = useColorMode();
 	const text = useColorModeValue('dark', 'light');
 	const SwitchIcon = useColorModeValue(FaMoon, FaSun);
+	const { pathname } = useRouter();
 
 	return (
 		<chakra.header
@@ -87,7 +89,11 @@ function PublicPageHeader(props) {
 							onClick={toggleMode}
 							icon={<SwitchIcon />}
 						/>
-						<NextLink href='/roadmap'>Our Roadmap</NextLink>
+						{pathname === '/changelog' ? (
+							<NextLink href='/roadmap'>Our Roadmap</NextLink>
+						) : (
+							<NextLink href='/changelog'>Our Changelog</NextLink>
+						)}
 						<Link
 							d='flex'
 							alignItems='center'
