@@ -1,11 +1,13 @@
 import Head from 'next/head';
-import { VStack } from '@chakra-ui/react';
+import { Skeleton, VStack } from '@chakra-ui/react';
 import { supabase } from '../../lib/supabaseClient';
 import TimelineLayout from '../../components/layouts/Timeline';
 import PublicFeaturesList from '../../components/admin/PublicFeaturesList';
+import { useFeatures } from '../../lib/hooks';
 
 function RoadmapPage(props) {
-	const { features, profile } = props;
+	const { profile, roadmap } = props;
+	const { features, isLoading } = useFeatures(roadmap?.id);
 
 	return (
 		<>
@@ -19,7 +21,14 @@ function RoadmapPage(props) {
 			</Head>
 			<TimelineLayout profile={profile}>
 				<VStack py={16} w='full' spacing={8}>
-					<PublicFeaturesList features={features} />
+					<Skeleton isLoaded={!isLoading}>
+						{features && features.length > 0 ? (
+							<PublicFeaturesList
+								features={features}
+								roadmap={roadmap}
+							/>
+						) : null}
+					</Skeleton>
 				</VStack>
 			</TimelineLayout>
 		</>
@@ -42,24 +51,17 @@ export async function getServerSideProps() {
 		.match({ author: profile?.id })
 		.single();
 
-	const { data: features, error } = await supabase
-		.from('features')
-		.select()
-		.match({ roadmap_id: roadmap?.id })
-		.order('upvotes', { ascending: false });
-
-	if (features && features.length > 0) {
+	if (roadmap) {
 		return {
 			props: {
-				features,
 				profile,
+				roadmap,
 			},
 		};
 	} else {
 		return {
 			props: {
-				features: [],
-				error,
+				roadmap: {},
 			},
 		};
 	}

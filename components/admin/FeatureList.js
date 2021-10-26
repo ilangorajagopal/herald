@@ -54,7 +54,7 @@ function Feature(props) {
 				templateColumns='repeat(8, 1fr)'
 				gap={2}
 				w='full'
-				h={40}
+				h={36}
 				px={6}
 				py={4}
 				spacing={4}
@@ -76,7 +76,11 @@ function Feature(props) {
 							>
 								{truncate(feature.title, { length: 40 })}
 							</Heading>
-							<Tag px={2}>{startCase(feature.status)}</Tag>
+							<Tag px={2}>
+								{feature?.status
+									? startCase(feature.status)
+									: 'Requested'}
+							</Tag>
 						</HStack>
 						<Text fontSize='sm' title={feature.description}>
 							{truncate(feature.description, { length: 140 })}
@@ -98,7 +102,7 @@ function Feature(props) {
 							alignItems='center'
 							justifyContent='center'
 							rounded='lg'
-							bg={useColorModeValue('gray.50', 'gray.600')}
+							bg={useColorModeValue('gray.100', 'gray.600')}
 						>
 							<Icon as={HiOutlineChevronUp} fontSize='2xl' />
 							<Text>{feature?.upvotes}</Text>
@@ -195,7 +199,7 @@ export default function FeatureList(props) {
 			h='auto'
 			alignItems='start'
 			justifyContent='start'
-			bg={useColorModeValue('gray.100', 'gray.700')}
+			bg={useColorModeValue('gray.50', 'gray.700')}
 			rounded='xl'
 			shadow='md'
 		>

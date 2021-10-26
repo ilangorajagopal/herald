@@ -124,16 +124,16 @@ export default function FeatureModal(props) {
 												{startCase(featureStatus)}
 											</MenuButton>
 											<MenuList mt={2} p={0}>
-												<MenuItem
-													onClick={() =>
-														setFeatureStatus(
-															'awaiting approval'
-														)
-													}
-													p={4}
-												>
-													Awaiting Approval
-												</MenuItem>
+												{/*<MenuItem*/}
+												{/*	onClick={() =>*/}
+												{/*		setFeatureStatus(*/}
+												{/*			'awaiting approval'*/}
+												{/*		)*/}
+												{/*	}*/}
+												{/*	p={4}*/}
+												{/*>*/}
+												{/*	Awaiting Approval*/}
+												{/*</MenuItem>*/}
 												<MenuItem
 													onClick={() =>
 														setFeatureStatus(

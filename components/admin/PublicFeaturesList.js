@@ -13,11 +13,14 @@ import {
 	HStack,
 	useDisclosure,
 	useColorModeValue,
+	useToast,
 } from '@chakra-ui/react';
 import startCase from 'lodash.startcase';
 import truncate from 'lodash.truncate';
 import { HiOutlineChevronUp } from 'react-icons/hi';
 import FeatureModal from '../common/FeatureModal';
+import { supabase } from '../../lib/supabaseClient';
+import { mutate } from 'swr';
 
 function Feature(props) {
 	const { feature, isFeatureModalOpen, onFeatureModalClose, saveFeature } =
@@ -52,7 +55,9 @@ function Feature(props) {
 							>
 								{truncate(feature.title, { length: 40 })}
 							</Heading>
-							<Tag px={2}>{startCase(feature.status)}</Tag>
+							{feature?.status ? (
+								<Tag px={2}>{startCase(feature.status)}</Tag>
+							) : null}
 						</HStack>
 						<Text fontSize='sm' title={feature.description}>
 							{truncate(feature.description, { length: 140 })}
@@ -97,21 +102,46 @@ function Feature(props) {
 }
 
 export default function PublicFeaturesList(props) {
-	const { features, saveFeature } = props;
+	const { features, roadmap } = props;
 	const {
 		isOpen: isFeatureModalOpen,
 		onOpen: onFeatureModalOpen,
 		onClose: onFeatureModalClose,
 	} = useDisclosure();
+	const toast = useToast();
+
+	async function createFeatureRequest(feature) {
+		const { data, error } = await supabase.from('features').insert({
+			...feature,
+			is_approved: false,
+			roadmap_id: roadmap?.id,
+			status: '',
+		});
+
+		if (data && !error) {
+			await mutate(`/api/features?roadmapId=${roadmap?.id}`);
+			toast({
+				title: 'Request Saved!',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+			onFeatureModalClose();
+		} else {
+			toast({
+				title: 'There was a problem creating your request',
+				status: 'error',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+		}
+	}
 
 	return (
 		<>
-			<HStack
-				w='full'
-				alignItems='center'
-				justifyContent='space-between'
-				mb={4}
-			>
+			<HStack w='full' alignItems='center' justifyContent='space-between'>
 				<Button
 					w='auto'
 					aria-label='Add Feature'
@@ -130,6 +160,7 @@ export default function PublicFeaturesList(props) {
 				bg={useColorModeValue('gray.50', 'gray.700')}
 				rounded='xl'
 				shadow='lg'
+				mt={8}
 			>
 				{features.map((feature, index) => (
 					<Fragment key={feature.id}>
@@ -137,7 +168,7 @@ export default function PublicFeaturesList(props) {
 							feature={feature}
 							isFeatureModalOpen={isFeatureModalOpen}
 							onFeatureModalClose={onFeatureModalClose}
-							saveFeature={saveFeature}
+							saveFeature={createFeatureRequest}
 						/>
 						{index < features.length - 1 ? (
 							<Divider style={{ marginTop: '0' }} />
