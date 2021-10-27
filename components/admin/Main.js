@@ -1,16 +1,29 @@
 import { useState } from 'react';
 import NextLink from 'next/link';
-import { Button, Flex, Select, VStack } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	Flex,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	VStack,
+	useColorModeValue,
+} from '@chakra-ui/react';
+import { FiChevronDown } from 'react-icons/fi';
+import capitalize from 'lodash.capitalize';
 import DefaultLayout from '../layouts/Default';
 import Changelogs from './Changelogs';
 import Banners from './Banners';
+import Roadmap from './Roadmap';
 
 export default function Main(props) {
 	const { banners, changelogs, profile } = props;
-	const [activeType, setActiveType] = useState('changelogs');
+	const [activeType, setActiveType] = useState('changelog');
 
 	let componentContent = null;
-	if (activeType === 'changelogs') {
+	if (activeType === 'changelog') {
 		componentContent = (
 			<>
 				<Flex
@@ -48,6 +61,30 @@ export default function Main(props) {
 				</VStack>
 			</>
 		);
+	} else if (activeType === 'waitlist') {
+		componentContent = (
+			<Box
+				w='full'
+				h={48}
+				d='flex'
+				alignItems='center'
+				justifyContent='center'
+				borderWidth={2}
+				borderStyle='solid'
+				borderColor={useColorModeValue('gray.400', 'gray.700')}
+				borderRadius='lg'
+			>
+				Coming soon!
+			</Box>
+		);
+	} else if (activeType === 'roadmap') {
+		componentContent = (
+			<>
+				<VStack w='full' spacing={8}>
+					<Roadmap profile={profile} />
+				</VStack>
+			</>
+		);
 	}
 
 	return (
@@ -59,19 +96,47 @@ export default function Main(props) {
 					w='full'
 					my={6}
 				>
-					<Select
-						w='auto'
-						fontSize='4xl'
-						defaultValue={activeType}
-						onChange={(e) => setActiveType(e.target.value)}
-						variant='unstyled'
-					>
-						<option value='changelogs'>Changelog</option>
-						<option value='banners'>Banners</option>
-						{/*<option value="roadmap">*/}
-						{/*	Roadmap*/}
-						{/*</option>*/}
-					</Select>
+					<Menu>
+						<MenuButton
+							as={Button}
+							fontSize='4xl'
+							px={0}
+							rightIcon={<FiChevronDown />}
+							variant='ghost'
+							w='auto'
+							_hover={{ bg: 'none' }}
+							_active={{ bg: 'none' }}
+							_focus={{ bg: 'none' }}
+						>
+							{capitalize(activeType)}
+						</MenuButton>
+						<MenuList mt={2} p={0}>
+							<MenuItem
+								onClick={() => setActiveType('changelog')}
+								p={4}
+							>
+								Changelog
+							</MenuItem>
+							<MenuItem
+								onClick={() => setActiveType('banners')}
+								p={4}
+							>
+								Banners
+							</MenuItem>
+							<MenuItem
+								onClick={() => setActiveType('waitlist')}
+								p={4}
+							>
+								Waitlist
+							</MenuItem>
+							<MenuItem
+								onClick={() => setActiveType('roadmap')}
+								p={4}
+							>
+								Roadmap
+							</MenuItem>
+						</MenuList>
+					</Menu>
 				</Flex>
 				{componentContent}
 			</VStack>

@@ -46,7 +46,7 @@ const Footer = () => {
 							rel='noopener noreferrer'
 						>
 							<Image
-								src='https://useherald.com/_next/image?url=%2Flogo.png&w=48&q=75'
+								src='/logo.png'
 								width={16}
 								height={16}
 								alt='Herald Logo'

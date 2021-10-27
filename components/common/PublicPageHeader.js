@@ -1,9 +1,23 @@
 import NextLink from 'next/link';
-import { chakra, Flex, Image, Link, useColorModeValue } from '@chakra-ui/react';
-import { FaExternalLinkSquareAlt } from 'react-icons/fa';
+import {
+	chakra,
+	Flex,
+	HStack,
+	IconButton,
+	Image,
+	Link,
+	useColorMode,
+	useColorModeValue,
+} from '@chakra-ui/react';
+import { FaExternalLinkSquareAlt, FaMoon, FaSun } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 function PublicPageHeader(props) {
 	const { profile } = props;
+	const { toggleColorMode: toggleMode } = useColorMode();
+	const text = useColorModeValue('dark', 'light');
+	const SwitchIcon = useColorModeValue(FaMoon, FaSun);
+	const { pathname } = useRouter();
 
 	return (
 		<chakra.header
@@ -59,7 +73,27 @@ function PublicPageHeader(props) {
 							</chakra.a>
 						</NextLink>
 					</Flex>
-					<Flex justify='flex-end' align='center' color='gray.400'>
+					<HStack
+						spacing='5'
+						justify='flex-end'
+						align='center'
+						color='gray.400'
+					>
+						<IconButton
+							size='md'
+							fontSize='lg'
+							aria-label={`Switch to ${text} mode`}
+							variant='ghost'
+							color='current'
+							ml={{ base: '0', md: '3' }}
+							onClick={toggleMode}
+							icon={<SwitchIcon />}
+						/>
+						{pathname === '/changelog' ? (
+							<NextLink href='/roadmap'>Our Roadmap</NextLink>
+						) : (
+							<NextLink href='/changelog'>Our Changelog</NextLink>
+						)}
 						<Link
 							d='flex'
 							alignItems='center'
@@ -69,7 +103,7 @@ function PublicPageHeader(props) {
 							Home&nbsp;&nbsp;
 							<FaExternalLinkSquareAlt />
 						</Link>
-					</Flex>
+					</HStack>
 				</Flex>
 			</chakra.div>
 		</chakra.header>
