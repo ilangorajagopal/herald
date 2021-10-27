@@ -21,10 +21,25 @@ import { HiOutlineChevronUp } from 'react-icons/hi';
 import FeatureModal from '../common/FeatureModal';
 import { supabase } from '../../lib/supabaseClient';
 import { mutate } from 'swr';
+import { useLocalStorage } from 'react-use';
 
 function Feature(props) {
-	const { feature, isFeatureModalOpen, onFeatureModalClose, saveFeature } =
-		props;
+	const {
+		feature,
+		isFeatureModalOpen,
+		isUpvoted,
+		onFeatureModalClose,
+		saveFeature,
+		updateVote,
+	} = props;
+
+	async function upvoteHandler() {
+		if (isUpvoted) {
+			updateVote(feature?.id, feature?.upvotes, 'CANCEL');
+		} else {
+			updateVote(feature?.id, feature?.upvotes, 'UP');
+		}
+	}
 
 	return (
 		<>
@@ -72,19 +87,41 @@ function Feature(props) {
 						justifyContent='start'
 						px={4}
 					>
-						<Button
-							w={16}
-							h={16}
-							p={2}
-							flexDirection='column'
-							alignItems='center'
-							justifyContent='center'
-							rounded='lg'
-							bg={useColorModeValue('gray.100', 'gray.600')}
-						>
-							<Icon as={HiOutlineChevronUp} fontSize='2xl' />
-							<Text>{feature?.upvotes}</Text>
-						</Button>
+						{isUpvoted ? (
+							<Button
+								w={16}
+								h={16}
+								p={2}
+								flexDirection='column'
+								alignItems='center'
+								justifyContent='center'
+								rounded='lg'
+								bg={useColorModeValue('gray.100', 'gray.600')}
+								borderWidth={1}
+								borderStyle='solid'
+								borderColor='brand.200'
+								onClick={upvoteHandler}
+							>
+								<Icon as={HiOutlineChevronUp} fontSize='2xl' />
+								<Text>{feature?.upvotes}</Text>
+							</Button>
+						) : (
+							<Button
+								w={16}
+								h={16}
+								p={2}
+								flexDirection='column'
+								alignItems='center'
+								justifyContent='center'
+								shadow='md'
+								rounded='lg'
+								bg={useColorModeValue('gray.100', 'gray.600')}
+								onClick={upvoteHandler}
+							>
+								<Icon as={HiOutlineChevronUp} fontSize='2xl' />
+								<Text>{feature?.upvotes}</Text>
+							</Button>
+						)}
 					</Flex>
 				</GridItem>
 			</Grid>
@@ -108,6 +145,10 @@ export default function PublicFeaturesList(props) {
 		onOpen: onFeatureModalOpen,
 		onClose: onFeatureModalClose,
 	} = useDisclosure();
+	const [value, setValue] = useLocalStorage(
+		`__herald_votes_${roadmap?.id}`,
+		''
+	);
 	const toast = useToast();
 
 	async function createFeatureRequest(feature) {
@@ -139,6 +180,48 @@ export default function PublicFeaturesList(props) {
 		}
 	}
 
+	async function updateVote(id, upvotes, type) {
+		let change = 0;
+		if (type === 'UP') {
+			change = 1;
+			const upvoteList = value?.split(',');
+			upvoteList?.push(id);
+			setValue(upvoteList?.join(','));
+		} else {
+			change = -1;
+			const upvoteList = value?.split(',');
+			const updatedUpvoteList = upvoteList?.filter(
+				(featureId) => featureId !== id
+			);
+			setValue(updatedUpvoteList?.join(','));
+		}
+
+		const { data, error } = await supabase
+			.from('features')
+			.update({ upvotes: upvotes + change })
+			.match({ id });
+
+		if (data && !error) {
+			await mutate(`/api/features?roadmapId=${roadmap?.id}`);
+			toast({
+				title: 'Vote Saved!',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+			onFeatureModalClose();
+		} else {
+			toast({
+				title: 'There was a problem saving your vote.',
+				status: 'error',
+				duration: 3000,
+				isClosable: true,
+				position: 'top-right',
+			});
+		}
+	}
+
 	return (
 		<>
 			<HStack w='full' alignItems='center' justifyContent='space-between'>
@@ -162,19 +245,26 @@ export default function PublicFeaturesList(props) {
 				shadow='lg'
 				mt={8}
 			>
-				{features.map((feature, index) => (
-					<Fragment key={feature.id}>
-						<Feature
-							feature={feature}
-							isFeatureModalOpen={isFeatureModalOpen}
-							onFeatureModalClose={onFeatureModalClose}
-							saveFeature={createFeatureRequest}
-						/>
-						{index < features.length - 1 ? (
-							<Divider style={{ marginTop: '0' }} />
-						) : null}
-					</Fragment>
-				))}
+				{features.map((feature, index) => {
+					const upvoteList = value?.split(',');
+					let isUpvoted = upvoteList?.includes(feature?.id);
+
+					return (
+						<Fragment key={feature.id}>
+							<Feature
+								feature={feature}
+								isFeatureModalOpen={isFeatureModalOpen}
+								isUpvoted={isUpvoted}
+								onFeatureModalClose={onFeatureModalClose}
+								saveFeature={createFeatureRequest}
+								updateVote={updateVote}
+							/>
+							{index < features.length - 1 ? (
+								<Divider style={{ marginTop: '0' }} />
+							) : null}
+						</Fragment>
+					);
+				})}
 			</VStack>
 		</>
 	);
