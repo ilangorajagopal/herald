@@ -25,7 +25,7 @@ export default function Changelogs(props) {
 							>
 								<Text color='brand.200'>
 									<NextLink
-										href={`/changelog/edit?id=${changelog.id}`}
+										href={`/dashboard/changelog/edit?id=${changelog.id}`}
 									>
 										Edit
 									</NextLink>
