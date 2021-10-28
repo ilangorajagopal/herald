@@ -25,7 +25,7 @@ export default function Banners(props) {
 							>
 								<Text color='brand.200'>
 									<NextLink
-										href={`/banner/edit?id=${banner.id}`}
+										href={`/dashboard/banner/edit?id=${banner.id}`}
 									>
 										Edit
 									</NextLink>

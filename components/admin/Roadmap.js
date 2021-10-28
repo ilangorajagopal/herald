@@ -7,6 +7,7 @@ import {
 	Spinner,
 	Text,
 	VStack,
+	useColorModeValue,
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
@@ -166,9 +167,9 @@ export default function Roadmap(props) {
 				flexDirection='column'
 				alignItems='center'
 				justifyContent='center'
-				borderWidth={1}
-				borderStyle='solid'
-				borderRadius='lg'
+				bg={useColorModeValue('gray.50', 'gray.700')}
+				rounded='xl'
+				shadow='lg'
 			>
 				<Text fontSize='xl' mb={4}>
 					You don&apos;t have any features yet. Create your first
@@ -191,9 +192,9 @@ export default function Roadmap(props) {
 				d='flex'
 				alignItems='center'
 				justifyContent='center'
-				borderWidth={1}
-				borderStyle='solid'
-				borderRadius='lg'
+				bg={useColorModeValue('gray.50', 'gray.700')}
+				rounded='xl'
+				shadow='lg'
 			>
 				<Spinner />
 			</Box>
@@ -218,9 +219,9 @@ export default function Roadmap(props) {
 				flexDirection='column'
 				alignItems='center'
 				justifyContent='center'
-				borderWidth={1}
-				borderStyle='solid'
-				borderRadius='lg'
+				bg={useColorModeValue('gray.50', 'gray.700')}
+				rounded='xl'
+				shadow='lg'
 			>
 				<Text fontSize='xl' mb={4}>
 					You don&apos;t have a roadmap yet. Create one.
@@ -239,9 +240,9 @@ export default function Roadmap(props) {
 					h={64}
 					alignItems='center'
 					justifyContent='center'
-					borderWidth={1}
-					borderStyle='solid'
-					borderRadius='lg'
+					bg={useColorModeValue('gray.50', 'gray.700')}
+					rounded='xl'
+					shadow='lg'
 				>
 					<Spinner />
 				</Flex>
