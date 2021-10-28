@@ -149,14 +149,17 @@ const Header = () => {
 												src={avatarUrl}
 											/>
 										</MenuButton>
-										<MenuList>
-											<MenuItem>
+										<MenuList p={0} shadow='md'>
+											<MenuItem p={4}>
 												<NextLink href='/settings/profile'>
 													Settings
 												</NextLink>
 											</MenuItem>
-											<MenuDivider />
-											<MenuItem onClick={handleSignOut}>
+											<MenuDivider m={0} />
+											<MenuItem
+												p={4}
+												onClick={handleSignOut}
+											>
 												Logout
 											</MenuItem>
 										</MenuList>
