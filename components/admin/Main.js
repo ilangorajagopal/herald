@@ -15,11 +15,11 @@ import { FiChevronDown } from 'react-icons/fi';
 import capitalize from 'lodash.capitalize';
 import DefaultLayout from '../layouts/Default';
 import Changelogs from './Changelogs';
-// import Banners from './Banners';
+import Banners from './Banners';
 import Roadmap from './Roadmap';
 
 export default function Main(props) {
-	const { changelogs, profile } = props;
+	const { banners, changelogs, profile } = props;
 	const [activeType, setActiveType] = useState('changelog');
 
 	let componentContent = null;
@@ -43,36 +43,23 @@ export default function Main(props) {
 		);
 	} else if (activeType === 'banners') {
 		componentContent = (
-			// <>
-			// 	<Flex
-			// 		alignItems='center'
-			// 		justifyContent='start'
-			// 		w='full'
-			// 		mb={4}
-			// 	>
-			// 		<NextLink href='/dashboard/banner/new'>
-			// 			<Button px={8} py={6} colorScheme='brand'>
-			// 				Add Banner
-			// 			</Button>
-			// 		</NextLink>
-			// 	</Flex>
-			// 	<VStack w='full' spacing={8}>
-			// 		<Banners banners={banners} profile={profile} />
-			// 	</VStack>
-			// </>
-			<Box
-				w='full'
-				h={48}
-				d='flex'
-				alignItems='center'
-				justifyContent='center'
-				borderWidth={2}
-				borderStyle='solid'
-				borderColor={useColorModeValue('gray.400', 'gray.700')}
-				borderRadius='lg'
-			>
-				Coming soon!
-			</Box>
+			<>
+				<Flex
+					alignItems='center'
+					justifyContent='start'
+					w='full'
+					mb={4}
+				>
+					<NextLink href='/dashboard/banner/new'>
+						<Button px={8} py={6} colorScheme='brand'>
+							Add Banner
+						</Button>
+					</NextLink>
+				</Flex>
+				<VStack w='full' spacing={8}>
+					<Banners banners={banners} profile={profile} />
+				</VStack>
+			</>
 		);
 	} else if (activeType === 'waitlist') {
 		componentContent = (
@@ -137,16 +124,16 @@ export default function Main(props) {
 								Roadmap
 							</MenuItem>
 							<MenuItem
-								onClick={() => setActiveType('waitlist')}
-								p={4}
-							>
-								Waitlist
-							</MenuItem>
-							<MenuItem
 								onClick={() => setActiveType('banners')}
 								p={4}
 							>
 								Banners
+							</MenuItem>
+							<MenuItem
+								onClick={() => setActiveType('waitlist')}
+								p={4}
+							>
+								Waitlist
 							</MenuItem>
 						</MenuList>
 					</Menu>

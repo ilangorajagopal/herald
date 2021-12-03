@@ -145,6 +145,7 @@ function Feature(props) {
 				loadingCTA='Saving Feature...'
 				isOpen={isFeatureModalOpen}
 				onClose={onFeatureModalClose}
+				setStatus={true}
 			/>
 			<Modal
 				isCentered={true}
