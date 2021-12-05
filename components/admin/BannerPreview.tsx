@@ -38,8 +38,7 @@ export default function BannerPreview(props) {
 		ctaElement = (
 			<chakra.a href={cta}>
 				<Button
-					py={1}
-					px={2}
+					p={4}
 					bg={ctaButtonBgColor}
 					_hover={{ bg: ctaButtonBgColor }}
 					color='white'
@@ -91,7 +90,7 @@ export default function BannerPreview(props) {
 					right={4}
 					transform='translateY(-50%)'
 				>
-					<Icon as={BiX} color='gray.500' w={8} h={8} />
+					<Icon as={BiX} color='white' w={8} h={8} />
 				</chakra.span>
 				<chakra.span fontSize='md' fontWeight='bold' mr={4}>
 					{title}
@@ -114,12 +113,17 @@ export default function BannerPreview(props) {
 				position='relative'
 			>
 				<chakra.span position='absolute' top={4} right={4}>
-					<Icon as={BiX} color='gray.500' w={8} h={8} />
+					<Icon as={BiX} color='white' w={8} h={8} />
 				</chakra.span>
-				<chakra.span fontSize='2xl' fontWeight='bold' mb={2}>
+				<chakra.span
+					color='white'
+					fontSize='2xl'
+					fontWeight='bold'
+					mb={2}
+				>
 					{title}
 				</chakra.span>
-				<chakra.span fontSize='lg' mb={6}>
+				<chakra.span color='white' fontSize='md' mb={6}>
 					{content}
 				</chakra.span>
 				{ctaElement}
