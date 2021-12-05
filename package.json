@@ -6,12 +6,19 @@
 		"build": "next build",
 		"start": "next start",
 		"prepare": "husky install",
-		"lint": "eslint ./ --ext js,jsx,ts,tsx"
+		"lint": "eslint ./ --ext js,jsx,ts,tsx",
+		"db:generate": "prisma generate --schema=./prisma/schema.prisma",
+		"db:migrate": "prisma migrate dev --schema=./prisma/schema.prisma --skip-seed",
+		"db:reset": "prisma migrate reset --schema=./prisma/schema.prisma --skip-seed",
+		"db:push": "prisma db push --schema=./prisma/schema.prisma --skip-seed",
+		"db:seed": "npx prisma db seed",
+		"db:studio": "prisma studio --schema=./prisma/schema.prisma"
 	},
 	"dependencies": {
 		"@chakra-ui/react": "^1.6.5",
 		"@emotion/react": "^11",
 		"@emotion/styled": "^11",
+		"@prisma/client": "^3.6.0",
 		"@supabase/supabase-js": "^1.20.0",
 		"@supabase/ui": "^0.32.0",
 		"@tiptap/extension-heading": "^2.0.0-beta.15",
@@ -49,6 +56,7 @@
 		"husky": "^7.0.1",
 		"lint-staged": "^11.1.0",
 		"prettier": "2.3.2",
+		"prisma": "^3.6.0",
 		"ts-node": "^10.4.0",
 		"typescript": "^4.5.2"
 	},
